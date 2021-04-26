@@ -7,6 +7,7 @@ from lyrics import get_lyrics
 from random_dog import get_dog
 import os
 from random import randint
+import time
 
 client = discord.Client()
 
@@ -101,7 +102,9 @@ async def on_message(message):
 
     rand = randint(1, 100)
     if rand == 1:
-        await message.add_reaction(str("💩"))
+        await message.channel.send(str("👍"))
+        time.sleep(2)
+        await message.channel.send("(menfout en gros)")
 
     if message.content == "bon toutou":
         dog = get_dog()
