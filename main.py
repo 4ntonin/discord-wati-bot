@@ -4,6 +4,7 @@ from randomfox import get_fox
 from meteo import get_temp
 from roulette import roulette
 from lyrics import get_lyrics
+from random_dog import get_dog
 import os
 from random import randint
 
@@ -50,7 +51,7 @@ async def on_message(message):
             await message.channel.send(limite[res])
             break
 
-    if message.content.startswith('renard') or message.content.startswith('Renard'):
+    if message.content == 'renard' or message.content == 'Renard':
         fox = get_fox()
         await message.channel.send(fox)
 
@@ -90,11 +91,8 @@ async def on_message(message):
                 await message.channel.send("```\n" + lyrics1 + "\n```")
                 await message.channel.send("```\n" + lyrics2 + "\n```")
             except:
-                try:
-                    lyrics1 = get_lyrics(name)
-                    await message.channel.send("```\n" + lyrics1 + "\n```")
-                except:
-                    await message.channel.send('No lyrics found.')
+                lyrics1 = get_lyrics(name)
+                await message.channel.send("```\n" + lyrics1 + "\n```")
 
     if message.content.startswith('repeat'):
         repeat = message.content[7:]
@@ -104,6 +102,10 @@ async def on_message(message):
     rand = randint(1, 100)
     if rand == 1:
         await message.add_reaction(str("💩"))
+
+    if message.content == "bon toutou":
+        dog = get_dog()
+        await message.channel.send(dog)
 
 
 client.run(os.getenv('WATI_BOT_TOKEN'))
