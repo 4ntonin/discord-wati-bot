@@ -97,8 +97,11 @@ async def on_message(message):
 
     if message.content.startswith('repeat'):
         repeat = message.content[7:]
-        await message.delete()
-        await message.channel.send(repeat)
+        try:
+            await message.delete()
+            await message.channel.send(repeat)
+        except:
+            await message.channel.send("? je suis pas ton chien en gros")
 
     rand = randint(1, 100)
     if rand == 1:
