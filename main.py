@@ -127,6 +127,10 @@ async def on_message(message):
         await message.delete()
         with open('data\\normancepetitblagueur.jpg', 'rb') as norman:
             await channel.send(file=discord.File(norman))
+    elif content == ".sheesh":
+        await message.delete()
+        with open('data\\sheesh-earrape.mp3', 'rb') as sheesh:
+            await channel.send(file=discord.File(sheesh))
 
 
 client.run(os.getenv('WATI_BOT_TOKEN'))
