@@ -7,7 +7,6 @@ def get_lyrics(name):
     genius = lg.Genius(str(key), skip_non_songs=True, excluded_terms=["(Live)"], remove_section_headers=False)
     song = (genius.search_song(name))
     s = song.lyrics
-    print(song, "\n\n\n")
     if len(s) > 1990:
         i = 1990
         while s[i] != '\n':
