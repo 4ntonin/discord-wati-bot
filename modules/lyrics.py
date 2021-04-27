@@ -4,7 +4,7 @@ import os
 
 def get_lyrics(name):
     key = os.getenv('GENIUS_API_KEY')
-    genius = lg.Genius(f'{key}', skip_non_songs=True, excluded_terms=["(Live)"], remove_section_headers=False)
+    genius = lg.Genius(str(key), skip_non_songs=True, excluded_terms=["(Live)"], remove_section_headers=False)
     song = (genius.search_song(name))
     s = song.lyrics
     print(song, "\n\n\n")

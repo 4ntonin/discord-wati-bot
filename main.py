@@ -1,10 +1,10 @@
 import discord
-import ferie
-from randomfox import get_fox
-from meteo import get_temp
-from roulette import roulette
-from lyrics import get_lyrics
-from random_dog import get_dog
+from modules.ferie import Ferie
+from modules.randomfox import get_fox
+from modules.meteo import get_temp
+from modules.roulette import roulette
+from modules.lyrics import get_lyrics
+from modules.random_dog import get_dog
 import os
 from random import randint
 import time
@@ -23,7 +23,7 @@ async def on_message(message):
         return
 
     if message.content == ".holiday":
-        f = ferie.Ferie()
+        f = Ferie()
         feries_du_mois = f.get_feries()
         chaine = f"Ce mois-ci, il y a {len(feries_du_mois)} jour(s) férié(s).\n"
         x = 0
