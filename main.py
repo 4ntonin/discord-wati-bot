@@ -70,18 +70,18 @@ async def on_message(message):
     if content.startswith(".lyrics"):
         name = content[8:]
         try:
-            lyrics1, lyrics2, lyrics3 = get_lyrics(name)
+            lyrics1 = get_lyrics(name)
             await channel.send("```\n" + lyrics1 + "\n```")
-            await channel.send("```\n" + lyrics2 + "\n```")
-            await channel.send("```\n" + lyrics3 + "\n```")
         except:
             try:
                 lyrics1, lyrics2 = get_lyrics(name)
                 await channel.send("```\n" + lyrics1 + "\n```")
                 await channel.send("```\n" + lyrics2 + "\n```")
             except:
-                lyrics1 = get_lyrics(name)
+                lyrics1, lyrics2, lyrics3 = get_lyrics(name)
                 await channel.send("```\n" + lyrics1 + "\n```")
+                await channel.send("```\n" + lyrics2 + "\n```")
+                await channel.send("```\n" + lyrics3 + "\n```")
 
     if content.startswith('repeat'):
         repeat = content[7:]
@@ -119,7 +119,7 @@ async def on_message(message):
                 chaine += ', '
         chaine += '.'
         await channel.send(chaine)
-    elif content == ".bonsoir non":
+    elif content == ".bonsoirnon":
         await message.delete()
         with open('data\\bonsoirnon.jpg', 'rb') as bonsoirnon:
             await channel.send(file=discord.File(bonsoirnon))
