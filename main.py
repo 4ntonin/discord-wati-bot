@@ -5,6 +5,7 @@ from modules.meteo import get_temp
 from modules.roulette import roulette
 from modules.lyrics import get_lyrics
 from modules.random_dog import get_dog
+import data
 import os
 from random import randint
 import time
@@ -19,10 +20,94 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    channel = message.channel
+    content = message.content
     if message.author == client.user:
         return
 
-    if message.content == ".holiday":
+    quoi = ('quoi', 'Quoi', 'QUOI', 'quois', 'koi', 'Koi', 'KOI', 'quoie', 'quoient')
+    quoimsg = content.strip("?,.;!: ")
+    if quoimsg.endswith(quoi):
+        await channel.send('feur')
+
+    hein = ('hein', 'hein?', 'hein ?', 'huns', 'hun', 'Huns', 'Hun')
+    if content.endswith(hein):
+        await channel.send('deux')
+
+    nword = ('negro', 'nigger', 'negre', 'nègre', 'niggers', 'negros', 'négro', 'négros', 'negres', 'nègres', 'nigga', 'niggas')
+    limite = ("???? limite ça", "??? allo ça bug", "euhh ???", "??????????", "euh mon reuf ?", "? c'est raciste ça")
+    for i in nword:
+        if i in content:
+            res = randint(0, len(limite) - 1)
+            await channel.send(limite[res])
+            break
+
+    juif = ('juif', 'juifs', 'Juif', 'Juifs', 'JUIF', 'JUIFS')
+    for i in juif:
+        if i in content:
+            with open('data\\attentionsolglissant.jpg', 'rb') as attentionsolglissant:
+                await channel.send(file=discord.File(attentionsolglissant))
+            break
+
+    meteo = ('meteo', 'météo', 'Météo', 'Meteo', 'METEO')
+    if content.startswith(meteo):
+        try:
+            r = content
+            city = r[6:]
+            name, temp, ressenti, description = get_temp(city)
+            await channel.send(f"Il fait actuellement, à {name}, {temp}°C (ressenti {ressenti}°C, {description}).")
+        except KeyError:
+            await channel.send("Erreur. Essayez une autre ville.")
+
+    if content.startswith('roulette'):
+        r = content
+        liste = r[9:]
+        try:
+            await channel.send(roulette(liste))
+        except:
+            await channel.send('Error.')
+
+    if content.startswith(".lyrics"):
+        name = content[8:]
+        try:
+            lyrics1, lyrics2, lyrics3 = get_lyrics(name)
+            await channel.send("```\n" + lyrics1 + "\n```")
+            await channel.send("```\n" + lyrics2 + "\n```")
+            await channel.send("```\n" + lyrics3 + "\n```")
+        except:
+            try:
+                lyrics1, lyrics2 = get_lyrics(name)
+                await channel.send("```\n" + lyrics1 + "\n```")
+                await channel.send("```\n" + lyrics2 + "\n```")
+            except:
+                lyrics1 = get_lyrics(name)
+                await channel.send("```\n" + lyrics1 + "\n```")
+
+    if content.startswith('repeat'):
+        repeat = content[7:]
+        try:
+            await message.delete()
+            await channel.send(repeat)
+        except:
+            await channel.send("? je suis pas ton chien en gros")
+
+    rand = randint(1, 100)
+    if rand == 1:
+        await channel.send(str("👍"))
+        time.sleep(2)
+        await channel.send("(menfout en gros)")
+
+    if content == "bon toutou":
+        dog = get_dog()
+        await channel.send(dog)
+    elif content == 'réel' or content == 'Réel':
+        rand = randint(1, 5)
+        if rand == 1:
+            await channel.send("mais reste digne akhy")
+    elif content == 'renard' or content == 'Renard':
+        fox = get_fox()
+        await channel.send(fox)
+    elif content == ".holiday":
         f = Ferie()
         feries_du_mois = f.get_feries()
         chaine = f"Ce mois-ci, il y a {len(feries_du_mois)} jour(s) férié(s).\n"
@@ -33,85 +118,15 @@ async def on_message(message):
             if x < len(feries_du_mois):
                 chaine += ', '
         chaine += '.'
-        await message.channel.send(chaine)
-
-    quoi = ('quoi', 'Quoi', 'QUOI', 'quois', 'koi', 'Koi', 'KOI', 'quoie', 'quoient')
-    quoimsg = message.content.strip("?,.;!: ")
-    if quoimsg.endswith(quoi):
-        await message.channel.send('feur')
-
-    hein = ('hein', 'hein?', 'hein ?', 'huns', 'hun', 'Huns', 'Hun')
-    if message.content.endswith(hein):
-        await message.channel.send('deux')
-
-    nword = ('negro', 'nigger', 'negre', 'nègre', 'niggers', 'negros', 'négro', 'négros', 'negres', 'nègres', 'nigga', 'niggas')
-    limite = ('???? limite ça', '??? allo ça bug', 'euhh ???', '??????????', 'euh mon reuf ?')
-    for i in nword:
-        if i in message.content:
-            res = randint(0, len(limite)-1)
-            await message.channel.send(limite[res])
-            break
-
-    if message.content == 'renard' or message.content == 'Renard':
-        fox = get_fox()
-        await message.channel.send(fox)
-
-    meteo = ('meteo', 'météo', 'Météo', 'Meteo', 'METEO')
-    if message.content.startswith(meteo):
-        try:
-            r = message.content
-            city = r[6:]
-            name, temp, ressenti, description = get_temp(city)
-            await message.channel.send(f"Il fait actuellement, à {name}, {temp}°C (ressenti {ressenti}°C, {description}).")
-        except KeyError:
-            await message.channel.send("Erreur. Essayez une autre ville.")
-
-    if message.content.startswith('roulette'):
-        r = message.content
-        liste = r[9:]
-        try:
-            await message.channel.send(roulette(liste))
-        except:
-            await message.channel.send('Error.')
-
-    if message.content == 'réel' or message.content == 'Réel':
-        rand = randint(1, 5)
-        if rand == 1:
-            await message.channel.send("mais reste digne akhy")
-
-    if message.content.startswith(".lyrics"):
-        name = message.content[8:]
-        try:
-            lyrics1, lyrics2, lyrics3 = get_lyrics(name)
-            await message.channel.send("```\n" + lyrics1 + "\n```")
-            await message.channel.send("```\n" + lyrics2 + "\n```")
-            await message.channel.send("```\n" + lyrics3 + "\n```")
-        except:
-            try:
-                lyrics1, lyrics2 = get_lyrics(name)
-                await message.channel.send("```\n" + lyrics1 + "\n```")
-                await message.channel.send("```\n" + lyrics2 + "\n```")
-            except:
-                lyrics1 = get_lyrics(name)
-                await message.channel.send("```\n" + lyrics1 + "\n```")
-
-    if message.content.startswith('repeat'):
-        repeat = message.content[7:]
-        try:
-            await message.delete()
-            await message.channel.send(repeat)
-        except:
-            await message.channel.send("? je suis pas ton chien en gros")
-
-    rand = randint(1, 100)
-    if rand == 1:
-        await message.channel.send(str("👍"))
-        time.sleep(2)
-        await message.channel.send("(menfout en gros)")
-
-    if message.content == "bon toutou":
-        dog = get_dog()
-        await message.channel.send(dog)
+        await channel.send(chaine)
+    elif content == ".bonsoir non":
+        await message.delete()
+        with open('data\\bonsoirnon.jpg', 'rb') as bonsoirnon:
+            await channel.send(file=discord.File(bonsoirnon))
+    elif content == ".genant":
+        await message.delete()
+        with open('data\\normancepetitblagueur.jpg', 'rb') as norman:
+            await channel.send(file=discord.File(norman))
 
 
 client.run(os.getenv('WATI_BOT_TOKEN'))
