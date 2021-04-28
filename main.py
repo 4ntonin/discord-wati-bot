@@ -5,7 +5,6 @@ from modules.meteo import get_temp
 from modules.roulette import roulette
 from modules.lyrics import get_lyrics
 from modules.random_dog import get_dog
-import data
 import os
 from random import randint
 import time
@@ -58,16 +57,14 @@ async def on_message(message):
             await channel.send(f"Il fait actuellement, à {name}, {temp}°C (ressenti {ressenti}°C, {description}).")
         except KeyError:
             await channel.send("Erreur. Essayez une autre ville.")
-
-    if content.startswith('roulette'):
+    elif content.startswith('roulette'):
         r = content
         liste = r[9:]
         try:
             await channel.send(roulette(liste))
         except:
             await channel.send('Error.')
-
-    if content.startswith(".lyrics"):
+    elif content.startswith(".lyrics"):
         name = content[8:]
         try:
             lyrics1 = get_lyrics(name)
@@ -82,8 +79,7 @@ async def on_message(message):
                 await channel.send("```\n" + lyrics1 + "\n```")
                 await channel.send("```\n" + lyrics2 + "\n```")
                 await channel.send("```\n" + lyrics3 + "\n```")
-
-    if content.startswith('repeat'):
+    elif content.startswith("repeat"):
         repeat = content[7:]
         try:
             await message.delete()
