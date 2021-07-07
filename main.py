@@ -24,6 +24,11 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+
+    fautsetaire = ('tais toi sah', 'chut', 'faut se taire', 'aller on arrête de parler maintenant')
+    if message.author.mention == '<@398733609605005313>':
+        await channel.send(f'{message.author.mention} {fautsetaire[randint(0, len(fautsetaire) - 1)]}')
+
     quoi = ('quoi', 'Quoi', 'QUOI', 'quois', 'koi', 'Koi', 'KOI', 'quoie', 'quoient')
     quoimsg = content.strip("?,.;!: ")
     rand = randint(1, 5)
@@ -34,9 +39,19 @@ async def on_message(message):
         else:
             await channel.send('feur')
 
-    hein = ('hein', 'hein?', 'hein ?', 'huns', 'hun', 'Huns', 'Hun')
+    hein = ('hein', 'Hein', 'HEIN', 'huns', 'hun', 'Huns', 'Hun')
+    quoimsg = content.strip("?,.;!: ")
     if content.endswith(hein):
         await channel.send('deux')
+    
+    oui = ('oui', 'Oui', 'OUI')
+    quoimsg = content.strip("?,.;!: ")
+    rand = randint(1, 2)
+    if content.endswith(oui):
+        if rand == 1:
+            await channel.send('fi')
+        else:
+            await channel.send('stisti')
 
     nword = ('negro', 'nigger', 'negre', 'nègre', 'niggers', 'negros', 'négro', 'négros', 'negres', 'nègres', 'nigga', 'niggas')
     limite = ("???? limite ça", "??? allo ça bug", "euhh ???", "??????????", "euh mon reuf ?", "? c'est raciste ça")
@@ -95,10 +110,10 @@ async def on_message(message):
     rand = randint(1, 100)
     if rand == 1:
         await channel.send(str("👍"))
-        time.sleep(2)
-        await channel.send("(menfout en gros)")
 
-    if content == "bon toutou":
+    if content == "...help":
+        await channel.send("``.lyrics [musique]\nmeteo [lieu]\nroulette [choix1, choix2, ...]\nrepeat [msg]\n.oumarcoach\n.norman\n.sheesh\n.feries``")
+    elif content == "bon toutou":
         dog = get_dog()
         await channel.send(dog)
     elif content == 'réel' or content == 'Réel':
@@ -108,7 +123,7 @@ async def on_message(message):
     elif content == 'renard' or content == 'Renard':
         fox = get_fox()
         await channel.send(fox)
-    elif content == ".holiday":
+    elif content == ".feries":
         f = Ferie()
         feries_du_mois = f.get_feries()
         chaine = f"Ce mois-ci, il y a {len(feries_du_mois)} jour(s) férié(s).\n"
@@ -120,11 +135,11 @@ async def on_message(message):
                 chaine += ', '
         chaine += '.'
         await channel.send(chaine)
-    elif content == ".bonsoirnon":
+    elif content == ".oumarcoach":
         await message.delete()
-        with open('data\\bonsoirnon.jpg', 'rb') as bonsoirnon:
-            await channel.send(file=discord.File(bonsoirnon))
-    elif content == ".genant":
+        with open('data\\bonsoirnon.jpg', 'rb') as oumarcoach:
+            await channel.send(file=discord.File(oumarcoach))
+    elif content == ".norman":
         await message.delete()
         with open('data\\normancepetitblagueur.jpg', 'rb') as norman:
             await channel.send(file=discord.File(norman))
