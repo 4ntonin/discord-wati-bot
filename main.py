@@ -26,8 +26,13 @@ async def on_message(message):
 
     quoi = ('quoi', 'Quoi', 'QUOI', 'quois', 'koi', 'Koi', 'KOI', 'quoie', 'quoient')
     quoimsg = content.strip("?,.;!: ")
+    rand = randint(1, 5)
     if quoimsg.endswith(quoi):
-        await channel.send('feur')
+        if rand == 1:
+            with open('data\moinenagui.jpg', 'rb') as moinenagui:
+                await channel.send(file=discord.File(moinenagui))
+        else:
+            await channel.send('feur')
 
     hein = ('hein', 'hein?', 'hein ?', 'huns', 'hun', 'Huns', 'Hun')
     if content.endswith(hein):
